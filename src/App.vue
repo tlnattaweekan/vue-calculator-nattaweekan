@@ -39,11 +39,19 @@ export default class App extends Vue {}
 }
 
 .layout-content {
-  height: 90%;
   display: grid;
-  grid-template-columns: 30% 30% 40%;
-  align-items: center;
+  grid-template-columns: 28% 28% 44%;
   justify-items: center;
+  margin-top: 3rem;
+  @media only screen and (min-width: 1500px) {
+    padding: 0 6rem;
+  }
+  @media only screen and (min-width: 1600px) {
+    padding: 0 10rem;
+  }
+  @media only screen and (min-width: 1800px) {
+    padding: 0 16rem;
+  }
 }
 #app {
   background-color: #f7f7f7;
