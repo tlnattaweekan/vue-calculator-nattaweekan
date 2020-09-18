@@ -7,12 +7,14 @@
           type="text"
           class="search-card search-input"
           placeholder="Search by result, date"
+          v-model="search"
         />
       </div>
       <button
-        class="search-relative search-card "
+        class="search-relative search-card"
+        @click="openCombobox = !openCombobox"
       >
-        <span>All</span>
+        <span>{{ isChecked }}</span>
         <div
           class="search-combobox search-combobox-icon"
         >
@@ -26,33 +28,130 @@
             />
           </svg>
         </div>
+        <div :class="comboboxList()">
+          <button
+            :class="comboboxItem(item)"
+            @click="onClickCombobox(item)"
+            v-for="item in itemsList"
+            :key="item"
+          >
+            {{ item }}
+          </button>
+        </div>
       </button>
     </div>
     <div class="card-history">
-      <div class="history-item">
-        <h3>Calculator A</h3>
-        <h3 class="time">
-          09/09/2030 - 23:33.23
-        </h3>
-        <h2 class="history-item-merge">124</h2>
-        <hr class="dividers history-item-merge" />
-        <h3 class="history-item-merge">2 x 62</h3>
+      <div
+        v-if="dataHistorys.length === 0"
+        class="msg"
+      >
+        <h3>No data available</h3>
       </div>
-      <div class="history-item">
-        <h3>Calculator A</h3>
+      <div
+        v-else
+        v-for="(item, index) in dataHistorys"
+        :key="index"
+        class="history-item"
+      >
+        <h3>Calculator {{ item.name }}</h3>
         <h3 class="time">
-          09/09/2030 - 23:33.23
+          {{ item.date }}
         </h3>
-        <h2 class="history-item-merge">124</h2>
+        <h2 class="history-item-merge">
+          {{ item.result }}
+        </h2>
         <hr class="dividers history-item-merge" />
-        <h3 class="history-item-merge">2 x 62</h3>
+        <h3 class="history-item-merge">
+          {{ item.data }}
+        </h3>
       </div>
     </div>
+    <button class="btn-clear" @click="clear">
+      Clear
+    </button>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    historys: Array,
+  },
+  data: () => ({
+    openCombobox: false,
+    isChecked: "All",
+    itemsList: ["A", "B", "All"],
+    dataHistorys: [],
+    search: "",
+  }),
+  mounted() {
+    this.onClickCombobox("All");
+  },
+  methods: {
+    comboboxItem(val) {
+      return [
+        "combobox-item",
+        {
+          "combobox-checked":
+            this.isChecked === val,
+        },
+      ];
+    },
+    comboboxList() {
+      return [
+        "combobox",
+        {
+          "combobox-is-hidden": !this
+            .openCombobox,
+        },
+      ];
+    },
+    clear() {
+      this.$emit("RESULT", false);
+    },
+    onClickCombobox(val) {
+      this.dataHistorys = [];
+      this.isChecked = val;
+      for (
+        let i = 0;
+        i < this.historys.length;
+        i += 1
+      ) {
+        if (this.isChecked === "All") {
+          this.dataHistorys.push(
+            this.historys[i]
+          );
+        } else if (
+          this.historys[i].name === this.isChecked
+        ) {
+          this.dataHistorys.push(
+            this.historys[i]
+          );
+        }
+      }
+    },
+    onSearch(val) {
+      this.dataHistorys = [];
+      const data = this.historys.filter(function(
+        item
+      ) {
+        const res =
+          item.result.includes(val) ||
+          item.date.includes(val);
+        return res;
+      });
+      this.dataHistorys = data;
+    },
+  },
+  watch: {
+    historys() {
+      this.onClickCombobox(this.isChecked);
+    },
+    search(val) {
+      this.onSearch(val);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -62,6 +161,7 @@ export default {};
   align-items: center;
   width: 85%;
   margin-right: 1.5rem;
+  position: relative;
 }
 .card-history {
   height: 40rem;
@@ -69,7 +169,13 @@ export default {};
   border-radius: 2rem;
   background-color: white;
   box-shadow: 1px 1px 7px #e0e0e0;
+  overflow: scroll;
 }
+
+.card-history::-webkit-scrollbar {
+  display: none;
+}
+
 .search {
   &-grid-layout {
     display: grid;
@@ -130,5 +236,73 @@ span,
 }
 .time {
   color: #a7d4fa;
+}
+
+.btn-clear {
+  outline: none !important;
+  position: absolute;
+  right: 2rem;
+  bottom: 1.5rem;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.7rem;
+  border: 0;
+  cursor: pointer;
+  background-color: #faa7a7;
+  color: white;
+  box-shadow: 1px 1px 7px #e0e0e0;
+
+  &:active {
+    background-color: #e0e0e0;
+    color: gray;
+    transition-duration: 0.2s;
+    transform: translateY(3px);
+  }
+}
+
+.combobox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 2.5rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.8rem;
+  overflow: hidden;
+  border: 1px solid #bdbdbd;
+  box-shadow: 1px 1px 7px #e0e0e0;
+  &-item {
+    padding: 0, 2rem;
+    text-align: start;
+    background-color: white;
+    height: 2rem;
+    border: 0;
+    outline: none !important;
+    color: gray;
+    cursor: pointer;
+    &:hover {
+      background-color: #a7d4fa;
+      transition-duration: 0.2s;
+      font-size: 1rem;
+      transform: translateY(2px);
+    }
+  }
+  &-checked {
+    background-color: #bdbdbd;
+  }
+  &-is-hidden {
+    display: none;
+  }
+}
+
+.msg {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  h3 {
+    align-self: center;
+  }
 }
 </style>
