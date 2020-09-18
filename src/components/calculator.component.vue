@@ -126,7 +126,6 @@ export default {
   methods: {
     onClick(val) {
       if (this.result > 0) {
-        console.log("result", this.result);
         this.clear();
       }
       if (typeof val === "string") {
@@ -141,27 +140,16 @@ export default {
       } else {
         console.log("val", val);
         console.log("this.data", this.data);
-        console.log("this.n", this.n);
-        if (!val && !this.data && !this.n) {
+        console.log("____________");
+        if (!val && !this.data) {
           this.data += val;
-          console.log("yes");
-        } else if (!this.data && !this.n) {
+        } else if (!this.data) {
           this.data += val;
-          console.log("case 2");
         } else {
           this.data += val.toString();
         }
-        // if (!this.n && !this.data) {
-        //   this.data += val;
-        // } else if (val && !this.n) {
-        //   this.data += val.toString();
-        // } else {
-        //   this.data += val.toString();
-        // }
         this.input += val.toString();
       }
-      console.log(val);
-      console.log(`n: ${this.n}`);
     },
     async equal() {
       let s = "";
