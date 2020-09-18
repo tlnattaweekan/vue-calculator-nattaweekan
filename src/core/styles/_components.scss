@@ -36,6 +36,16 @@
   color: gray;
   box-shadow: 1px 1px 7px #e0e0e0;
   cursor: pointer;
+
+  &:active {
+    background-color: #e0e0e0;
+    transition-duration: 0.2s;
+    transform: translateY(3px);
+  }
+  &:hover {
+    background-color: #b7dcfa;
+    transition-duration: 0.4s;
+  }
 }
 
 h2 {
