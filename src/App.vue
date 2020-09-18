@@ -54,7 +54,6 @@ export default {
     },
     getDialog(val) {
       this.dialog = val;
-      console.log(val);
     },
     closeAlert() {
       this.dialog = false;

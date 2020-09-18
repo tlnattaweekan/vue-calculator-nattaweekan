@@ -18,7 +18,7 @@
           <button @click="onClick(5)" class="btn-number">5</button>
           <button @click="onClick(6)" class="btn-number">6</button>
           <button @click="onClick('=')" class="btn-number item-equal">=</button>
-          <button id="btn-1" @click="onClick(1)" class="btn-number">1</button>
+          <button @click="onClick(1)" class="btn-number">1</button>
           <button @click="onClick(2)" class="btn-number">2</button>
           <button @click="onClick(3)" class="btn-number">3</button>
           <button @click="onClick('.')" class="btn-number">.</button>
