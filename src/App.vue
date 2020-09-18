@@ -2,28 +2,47 @@
   <div id="app">
     <div class="app-bar">Double Calculator</div>
     <div class="layout-content">
-      <calculator-component />
-      <calculator-component />
-      <list-history-component />
+      <calculator-component
+        @RESULT="getResultHistory"
+        :nameCalculator="'A'"
+      />
+      <calculator-component
+        @RESULT="getResultHistory"
+        :nameCalculator="'B'"
+      />
+      <list-history-component
+        @RESULT="getResultHistory"
+        :historys="history"
+      />
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import {
-  Component,
-  Vue,
-} from "vue-property-decorator";
+<script>
 import calculatorComponent from "@/components/calculator.component.vue";
 import listHistoryComponent from "@/components/list-history.component.vue";
 
-@Component({
+export default {
+  data: () => ({
+    history: [],
+  }),
+  methods: {
+    getResultHistory(val) {
+      if (!val) {
+        this.history = [];
+      } else {
+        console.log("vald", val);
+        console.log(this.history.length);
+        this.history.push(val);
+        console.log("val", this.history);
+      }
+    },
+  },
   components: {
     calculatorComponent,
     listHistoryComponent,
   },
-})
-export default class App extends Vue {}
+};
 </script>
 
 <style lang="scss">
