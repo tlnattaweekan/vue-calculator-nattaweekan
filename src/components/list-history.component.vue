@@ -84,12 +84,15 @@ export default {
       this.$emit("CLEAR", true);
     },
     onClickCombobox(val) {
-      this.dataHistorys = [];
-      this.isChecked = val;
-      for (let i = 0; i < this.historys.length; i += 1) {
-        if (this.isChecked === "All") this.dataHistorys.push(this.historys[i]);
-        else if (this.historys[i].name === this.isChecked)
-          this.dataHistorys.push(this.historys[i]);
+      if (this.historys !== null) {
+        this.dataHistorys = [];
+        this.isChecked = val;
+        for (let i = 0; i < this.historys.length; i += 1) {
+          if (this.isChecked === "All")
+            this.dataHistorys.push(this.historys[i]);
+          else if (this.historys[i].name === this.isChecked)
+            this.dataHistorys.push(this.historys[i]);
+        }
       }
     },
     onSearch(val) {
