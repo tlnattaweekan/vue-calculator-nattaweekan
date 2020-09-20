@@ -107,7 +107,7 @@ export default {
       else this.dataHistorys = [];
     },
     search(val) {
-      this.onSearch(val);
+      if (this.historys !== null) this.onSearch(val);
     }
   }
 };

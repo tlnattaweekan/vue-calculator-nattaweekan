@@ -39,7 +39,7 @@ export default {
   data: () => ({
     data: 0,
     keepData: [],
-    input: "",
+    input: 0,
     result: 0,
     time: new Date().toTimeString().substr(0, 8),
     date: new Date().toLocaleDateString()
